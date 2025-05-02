@@ -1,18 +1,30 @@
 const express = require('express')
+const { books } = require('./database_stuff/connection')
 const app = express()
-const db = require('./database_stuff/connection.js')
+
+app.use(express.json())
 
 app.get('/books',
-    (req,res)=>{
+    async (req,res)=>{
+        const book_data = await books.findAll()
+        console.log(book_data);
         res.json({
-            response: 'books fetched successfully'
+            response: 'Books fetched successfully',
+            book_data
         })
     }
 )
 
 app.post('/books',
-    (req,res)=>{
+    async (req,res)=>{
         // logic to add books here 
+        const {bookName, bookAuthor, bookPrice, bookGenre} = await req.body
+        books.create({
+            bookName,
+            bookAuthor,
+            bookPrice,
+            bookGenre
+        })
         res.json({
             response: "Book added successfully"
         })
@@ -40,6 +52,6 @@ app.patch('/books/:id',
 
 app.listen(3000, 
     ()=>{
-        console.log('Srever started on port 3000');
+        console.log('Server started on port 3000');
     }
 )
