@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPS</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        main{
+            transition: all ease-in 0.3s;
+        }
+        .btn{
+            transition: all ease 0.3s;
+        }
+        .won{
+            color: rgb(9, 202, 9);
+        }
+        .lost{
+            color: rgb(202, 9, 9);
+        }
+        .draw{
+            color: rgb(255, 255, 255);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center w-[100%] h-[100vh] bg-[#2b2d42]">
+
+
+        <main class="bg-[#8d99ae] border  rounded-xl shadow-xl p-5">
+            <div class="flex items-center justify-center gap-4">
+            <button class="btn p-3 hover:bg-[#ef233c] rounded-full shadow-xl cursor-pointer" id="rock">👊</button>
+            <button class="btn p-3 hover:bg-[#ef233c] rounded-full shadow-xl cursor-pointer" id="paper">🖐️</button>
+            <button class="btn p-3 hover:bg-[#ef233c] rounded-full shadow-xl cursor-pointer" id="scissors">✌</button>
+            </div>
+
+            <section style="font-family: fantasy; " class="w-full flex items-center justify-evenly p-3">
+                <div class="text-center text-lg text-[#06d6a0]">You: <p id="user"></p> </div>
+                <div class="text-center text-lg text-[#ffd166]">Computer: <p id="comp"></p> </div>
+            </section>
+           
+            <div class="grid grid-rows-2 items-center justify-center text-center font-bold" style="font-family: monospace;"><h3>RESULT: <h1 class="font-extrabold text-xl" id="res"></h1></h3></div>
+            <hr>
+            <div style="font-family:'Times New Roman', Times, serif;" class="score  grid grid-rows-2 items-center justify-center">
+                <div class="num flex gap-4">
+                    <h4>Wins: <h4 id="win_count"></h4></h4>
+                    <h4>Losses: <h4 id="loss_count"></h4></h4>
+                    <h4>Ties: <h4 id="tie_count"></h4></h4>
+                </div>
+                <button id="reset" class="">Reset Score</button>
+            </div>
+            <hr>
+        </main>
+
+        <script>
+            //const btns = document.querySelectorAll('.btn')
+            const rock = document.getElementById('rock');
+            const paper = document.getElementById('paper');
+            const scissors = document.getElementById('scissors');
+
+            const user = document.getElementById('user');
+            const comp = document.getElementById('comp');
+            const res = document.getElementById('res');
+
+            const reset = document.getElementById('reset');
+            const win = document.getElementById('win_count');
+            const loss = document.getElementById('loss_count');
+            const tie = document.getElementById('tie_count');
+
+            let win_cnt = 0;
+            let loss_cnt = 0;
+            let tie_cnt = 0;
+
+            //User configuration 
+            rock.onclick = ()=> userClick('Rock');
+            paper.onclick = ()=> userClick('Paper');
+            scissors.onclick = ()=> userClick('Scissors');
+
+            function userClick(btn_name){
+                user_choice = btn_name
+                user.innerText = user_choice
+                res.innerText = ''
+
+                 //Computer Configuration
+            choices = ['Rock', "Paper",'Scissors']
+            comp_choice = choices[Math.floor(Math.random() * choices.length)];
+            comp.innerText = comp_choice
+            
+            function checkResult(){
+                res.classList.remove('won', 'lost', 'draw')
+
+                if(user_choice == comp_choice ){
+                    res.innerText = "Tie"
+                    tie_cnt +=1;
+                    tie.innerText = tie_cnt
+                    res.classList.add('draw')
+                }
+
+                else if(user_choice == 'Rock' && comp_choice == 'Paper' || user_choice == 'Scissors' && comp_choice == 'Rock'|| user_choice == 'Paper' && comp_choice == 'Scissors' ){
+                    res.innerText = "You Lost!"
+                    loss_cnt +=1;
+                    loss.innerText = loss_cnt
+                    res.classList.add('lost')
+                }
+                else{
+                    res.innerText = "You Won!"
+                    win_cnt +=1;
+                    win.innerText = win_cnt
+                    res.classList.add('won')
+                }
+
+               
+            }
+
+            reset.onclick = function resetScore(){
+                win_cnt = 0;
+                loss_cnt = 0;
+                tie_cnt = 0;
+                win.innerText = 0;
+                loss.innerText = 0;
+                tie.innerText = 0;
+            }
+
+            checkResult()
+            }
+
+        
+
+        </script>
+</body>
+</html>

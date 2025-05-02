@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .done {
+        text-decoration: line-through;
+        color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="taskInfo">
+      <h3>
+        Total Tasks:
+        <span id="total"></span>
+      </h3>
+      <h3>
+        Completed Tasks:
+        <span id="done"></span>
+      </h3>
+      <h3>
+        Remaining Tasks:
+        <span id="remain"></span>
+      </h3>
+    </div>
+
+    <input type="text" name="" id="task" />
+    <input type="time" name="" id="task-time" />
+    <button id="add" onclick="addTask()">Add Task</button>
+
+    <div id="tasks" class="tasks"></div>
+
+    <script>
+      const task = document.getElementById("task");
+      const time = document.getElementById("task-time");
+      const tasks = document.getElementById("tasks");
+      const add = document.getElementById("add");
+
+      const total = document.getElementById("total");
+      const done = document.getElementById("done");
+      const remain = document.getElementById("remain");
+
+      total.innerText = "0";
+      remain.innerText = "0";
+      done.innerText = "0";
+
+      const taskList = [];
+
+      function addTask() {
+        let taskName = task.value;
+        let dueTime = time.value;
+        
+
+        if (taskName && dueTime) {
+          const newTask = { name: taskName, due: dueTime, completed: false };
+          taskList.push(newTask);
+          renderList();
+          task.value = "";
+          time.value = "";
+        }
+      }
+
+      function renderList() {
+        tasks.innerHTML = "";
+
+        let doneTasks = 0;
+        let remainingTasks = 0;
+        let totalTasks = taskList.length;
+
+        for (let i = 0; i < taskList.length; i++) {
+          const arrTask = taskList[i];
+          const taskDiv = document.createElement("div");
+          const deleteBtn = document.createElement("button");
+          deleteBtn.innerText = "Delete";
+
+          deleteBtn.onclick = removeTask;
+
+          const editBtn = document.createElement("button");
+          editBtn.innerText = "Edit";
+
+          editBtn.onclick = editTask;
+
+          taskDiv.textContent = `${i + 1}. ${arrTask.name} - Due at ${
+            arrTask.due
+          }`;
+          tasks.appendChild(taskDiv);
+          tasks.appendChild(deleteBtn);
+          tasks.appendChild(editBtn);
+
+          //task done and undone
+          taskDiv.addEventListener("click", function () {
+            arrTask.completed = !arrTask.completed;
+            renderList();
+          });
+
+          if (arrTask.completed) {
+            taskDiv.classList.add("done");
+            doneTasks++;
+          } else {
+            taskDiv.classList.remove("done");
+            remainingTasks++;
+          }
+
+          function removeTask() {
+            taskList.splice(i, 1);
+            if (remainingTasks > 0) remainingTasks--;
+            renderList();
+          }
+
+          function editTask() {
+            task.value = arrTask.name;
+            time.value = arrTask.due;
+            taskList.splice(i, 1);
+            renderList();
+          }
+         
+        }
+        total.innerText = totalTasks;
+        done.innerText = doneTasks;
+        remain.innerText = remainingTasks;
+        
+      }
+
+      renderList();
+    </script>
+  </body>
+</html>
