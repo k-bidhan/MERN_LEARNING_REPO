@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 
 const sequelize = new Sequelize(
-  "postgresql://postgres.vlqovvvvfskgibljdkkw:3rZtYagQcHInISTb@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
+  "postgresql://postgres.vlqovvvvfskgibljdkkw:w6o1vFi11NQhjAGn@aws-0-us-east-2.pooler.supabase.com:6543/postgres"
 );
 
 sequelize

@@ -57,7 +57,9 @@ exports.updateBook = async (req,res)=>{
     })
 }
 
+
 exports.singleBookFetch = async (req,res) =>{
+    try{
     const id = req.params.id;
     const single_data = await books.findByPk(id)
 
@@ -66,4 +68,9 @@ exports.singleBookFetch = async (req,res) =>{
         response : "Single book fetched!",
         single_data
     })
+}catch (error) {
+    console.error('Sequelize error:', error); 
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+
 }
